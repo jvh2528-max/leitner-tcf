@@ -2,116 +2,134 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#f4f6fb" />
   <title>Leitner TCF</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="app">
+  <main class="app-shell">
     <header class="topbar">
-      <div>
+      <button class="icon-btn" id="settingsBtn" aria-label="تنظیمات">⚙️</button>
+      <div class="title-wrap">
         <p class="eyebrow">LEITNER TCF</p>
         <h1>جعبه لایتنر من</h1>
         <p id="todaySummary" class="muted">در حال آماده‌سازی...</p>
       </div>
-      <button class="iconBtn" id="settingsBtn" aria-label="تنظیمات">⚙️</button>
     </header>
 
-    <section class="hero card">
-      <div>
-        <p class="muted">مرور امروز</p>
-        <div class="bigNumber" id="dueCount">0</div>
-        <p class="muted">کارت آماده مرور</p>
+    <section class="today-card">
+      <div class="today-head">
+        <div>
+          <p class="muted">مرور امروز</p>
+          <div class="big-number" id="dueCount">0</div>
+          <p class="muted">کارت آماده مرور</p>
+        </div>
       </div>
-      <button id="startReviewBtn" class="primary">شروع مرور امروز</button>
+      <button id="startReviewBtn" class="primary full">شروع مرور امروز</button>
     </section>
 
-    <section>
-      <div class="sectionTitle">
+    <section class="boxes-section">
+      <div class="section-title">
         <h2>۵ خونه لایتنر</h2>
         <span id="totalCount" class="pill">0 کارت</span>
       </div>
-      <div id="boxes" class="boxes"></div>
+
+      <div id="boxes" class="boxes-grid"></div>
     </section>
 
-    <section class="actions">
-      <button class="secondary" id="addCardBtn">＋ کارت جدید</button>
-      <button class="secondary" id="allCardsBtn">همه کارت‌ها</button>
-      <button class="secondary" id="backupBtn">پشتیبان‌گیری</button>
-      <label class="secondary fileLabel">
-        بازیابی
+    <section class="actions-grid">
+      <button class="action-btn" id="addCardBtn">＋ کارت جدید</button>
+      <button class="action-btn" id="allCardsBtn">همه کارت‌ها</button>
+      <button class="action-btn" id="backupBtn">پشتیبان‌گیری</button>
+      <label class="action-btn file-label">بازیابی
         <input type="file" id="restoreInput" accept="application/json" hidden />
       </label>
     </section>
 
-    <section class="stats card">
+    <section class="stats-card">
       <div><b id="masteredCount">0</b><span>تثبیت‌شده</span></div>
       <div><b id="streakCount">0</b><span>مرور امروز</span></div>
       <div><b id="newCount">0</b><span>خانه ۱</span></div>
     </section>
   </main>
 
-  <dialog id="addDialog">
-    <form method="dialog" id="addForm">
-      <h3>کارت جدید</h3>
-      <label>فرانسوی
-        <input id="frontInput" required placeholder="مثلاً entraîner" />
-      </label>
+  <dialog id="addDialog" class="sheet-dialog">
+    <form method="dialog" id="addForm" class="sheet-form">
+      <div class="sheet-head">
+        <h3>کارت جدید</h3>
+        <button value="cancel" class="close-btn" aria-label="بستن">✕</button>
+      </div>
+
       <label>فارسی
-        <textarea id="backInput" required placeholder="معنی / توضیح"></textarea>
+        <textarea id="backInput" required placeholder="مثلاً باعث شدن"></textarea>
       </label>
+
+      <label>فرانسوی
+        <input id="frontInput" required placeholder="مثلاً entraîner" dir="ltr" />
+      </label>
+
       <label>مثال
-        <textarea id="exampleInput" placeholder="Phrase exemple"></textarea>
+        <textarea id="exampleInput" placeholder="Phrase exemple" dir="ltr"></textarea>
       </label>
+
       <label>موضوع
         <input id="topicInput" placeholder="Voyage / TCF / Travail ..." />
       </label>
-      <div class="dialogActions">
-        <button value="cancel" class="secondary">انصراف</button>
-        <button value="default" id="saveCardBtn" class="primary">ذخیره</button>
-      </div>
+
+      <button value="default" id="saveCardBtn" class="primary full sticky-save">ذخیره کارت</button>
     </form>
   </dialog>
 
-  <dialog id="reviewDialog" class="reviewDialog">
-    <div class="reviewTop">
-      <button id="closeReviewBtn" class="iconBtn">✕</button>
-      <div>
-        <span id="reviewProgress" class="pill">0 / 0</span>
-        <span id="currentBoxBadge" class="pill">خانه 1</span>
+  <dialog id="reviewDialog" class="review-dialog">
+    <div class="review-shell">
+      <div class="review-top">
+        <button id="closeReviewBtn" class="icon-btn">✕</button>
+        <div class="review-badges">
+          <span id="reviewProgress" class="pill">0 / 0</span>
+          <span id="currentBoxBadge" class="pill">خانه 1</span>
+        </div>
       </div>
-    </div>
-    <div id="reviewCard" class="flashcard" tabindex="0">
-      <div class="topic" id="reviewTopic"></div>
-      <div class="front" id="reviewFront"></div>
-      <div id="answerArea" class="answerArea hidden">
-        <div class="divider"></div>
-        <div class="back" id="reviewBack"></div>
-        <div class="example" id="reviewExample"></div>
+
+      <div id="reviewCard" class="flashcard" tabindex="0">
+        <div class="topic" id="reviewTopic"></div>
+
+        <div class="prompt-label">فارسی</div>
+        <div class="persian-prompt" id="reviewBack"></div>
+
+        <div id="answerArea" class="answer-area hidden">
+          <div class="divider"></div>
+          <div class="answer-label">فرانسوی</div>
+          <div class="french-answer" id="reviewFront"></div>
+          <div class="example" id="reviewExample"></div>
+        </div>
+
+        <p class="tap-hint" id="tapHint">فرانسویش رو بگو، بعد جواب رو ببین</p>
       </div>
-      <p class="tapHint" id="tapHint">برای دیدن جواب لمس کن</p>
-    </div>
-    <div id="revealControls">
-      <button id="revealBtn" class="primary full">نمایش جواب</button>
-    </div>
-    <div id="gradeControls" class="gradeControls hidden">
-      <button id="dontKnowBtn" class="danger">بلد نیستم ↩</button>
-      <button id="knowBtn" class="success">بلدم ←</button>
+
+      <div id="revealControls">
+        <button id="revealBtn" class="primary full">نمایش جواب</button>
+      </div>
+
+      <div id="gradeControls" class="grade-controls hidden">
+        <button id="dontKnowBtn" class="danger">بلد نیستم ↩</button>
+        <button id="knowBtn" class="success">بلدم ←</button>
+      </div>
     </div>
   </dialog>
 
-  <dialog id="cardsDialog">
-    <div class="reviewTop">
-      <button id="closeCardsBtn" class="iconBtn">✕</button>
-      <h3>همه کارت‌ها</h3>
+  <dialog id="cardsDialog" class="sheet-dialog">
+    <div class="sheet-form">
+      <div class="sheet-head">
+        <h3 id="cardsTitle">همه کارت‌ها</h3>
+        <button id="closeCardsBtn" class="close-btn">✕</button>
+      </div>
+      <div id="cardsList" class="cards-list"></div>
     </div>
-    <div id="cardsList" class="cardsList"></div>
   </dialog>
 
   <div id="toast" class="toast"></div>
-
   <script src="app.js"></script>
 </body>
 </html>
