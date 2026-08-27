@@ -11,14 +11,14 @@
 <body>
   <main class="app-shell">
     <header class="topbar">
-      <div class="streak-badge">
-        <span>🔥</span>
+      <div class="streak-card">
+        <span class="fire">🔥</span>
         <b id="streakCount">0</b>
         <small>استریک</small>
       </div>
 
       <div class="brand-wrap">
-        <div class="brand-text">
+        <div class="brand-copy">
           <h1>Leitner TCF</h1>
           <p>یادگیری هوشمند لغات</p>
         </div>
@@ -27,12 +27,13 @@
     </header>
 
     <section class="hero-card">
+      <div class="hero-wave"></div>
       <div class="hero-info">
         <div class="hero-label">مرور امروز</div>
         <div class="hero-number" id="dueCount">0</div>
         <div class="hero-sub">کارت آماده مرور</div>
       </div>
-      <button id="startReviewBtn" class="hero-btn">▶ شروع مرور</button>
+      <button id="startReviewBtn" class="hero-btn"><span>▶</span> شروع مرور</button>
     </section>
 
     <section class="section-head">
@@ -42,32 +43,20 @@
 
     <section id="boxes" class="boxes-list"></section>
 
-    <section class="actions-grid">
-      <button class="action-btn" id="addCardBtn"><span class="action-icon pink">＋</span><span>کارت جدید</span></button>
-      <button class="action-btn" id="allCardsBtn"><span class="action-icon purple">☷</span><span>همه کارت‌ها</span></button>
-      <button class="action-btn" id="backupBtn"><span class="action-icon green">⬇</span><span>پشتیبان‌گیری</span></button>
-      <label class="action-btn file-label"><span class="action-icon blue">⬆</span><span>بازیابی</span>
+    <section class="actions-row">
+      <button class="action-btn" id="addCardBtn"><span class="action-icon pink">＋</span><small>کارت جدید</small></button>
+      <button class="action-btn" id="allCardsBtn"><span class="action-icon purple">☷</span><small>همه کارت‌ها</small></button>
+      <button class="action-btn" id="backupBtn"><span class="action-icon green">⬇</span><small>پشتیبان‌گیری</small></button>
+      <label class="action-btn file-label"><span class="action-icon blue">⬆</span><small>بازیابی</small>
         <input type="file" id="restoreInput" accept="application/json" hidden />
       </label>
     </section>
 
     <nav class="bottom-nav">
-      <button class="nav-item active">
-        <span>⌂</span>
-        <small>خانه</small>
-      </button>
-      <button class="nav-item">
-        <span>↻</span>
-        <small>مرور</small>
-      </button>
-      <button class="nav-item">
-        <span>▥</span>
-        <small>آمار</small>
-      </button>
-      <button class="nav-item" id="settingsBtn">
-        <span>⚙</span>
-        <small>تنظیمات</small>
-      </button>
+      <button class="nav-item active"><span>⌂</span><small>خانه</small></button>
+      <button class="nav-item"><span>↻</span><small>مرور</small></button>
+      <button class="nav-item"><span>▥</span><small>آمار</small></button>
+      <button class="nav-item" id="settingsBtn"><span>⚙</span><small>تنظیمات</small></button>
     </nav>
   </main>
 
@@ -75,25 +64,20 @@
     <form method="dialog" id="addForm" class="sheet-form">
       <div class="sheet-head">
         <h3>کارت جدید</h3>
-        <button value="cancel" class="close-btn" aria-label="بستن">✕</button>
+        <button value="cancel" class="close-btn">✕</button>
       </div>
-
       <label>فارسی
         <textarea id="backInput" required placeholder="مثلاً باعث شدن"></textarea>
       </label>
-
       <label>فرانسوی
         <input id="frontInput" required placeholder="مثلاً entraîner" dir="ltr" />
       </label>
-
       <label>مثال
         <textarea id="exampleInput" placeholder="Phrase exemple" dir="ltr"></textarea>
       </label>
-
       <label>موضوع
         <input id="topicInput" placeholder="Voyage / TCF / Travail ..." />
       </label>
-
       <button value="default" id="saveCardBtn" class="primary-btn full">ذخیره کارت</button>
     </form>
   </dialog>
@@ -107,26 +91,19 @@
           <span id="currentBoxBadge" class="tiny-pill">خانه 1</span>
         </div>
       </div>
-
       <div id="reviewCard" class="flashcard">
         <div class="topic" id="reviewTopic"></div>
         <div class="prompt-label">فارسی</div>
         <div class="persian-prompt" id="reviewBack"></div>
-
         <div id="answerArea" class="answer-area hidden">
           <div class="divider"></div>
           <div class="answer-label">فرانسوی</div>
           <div class="french-answer" id="reviewFront"></div>
           <div class="example" id="reviewExample"></div>
         </div>
-
         <p class="tap-hint" id="tapHint">اول حدس بزن، بعد جواب رو ببین</p>
       </div>
-
-      <div id="revealControls">
-        <button id="revealBtn" class="primary-btn full">نمایش جواب</button>
-      </div>
-
+      <div id="revealControls"><button id="revealBtn" class="primary-btn full">نمایش جواب</button></div>
       <div id="gradeControls" class="grade-controls hidden">
         <button id="dontKnowBtn" class="soft-danger">بلد نیستم ↩</button>
         <button id="knowBtn" class="soft-success">بلدم ✓</button>
