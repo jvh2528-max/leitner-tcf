@@ -10,53 +10,179 @@
 </head>
 <body>
   <main class="app-shell">
-    <header class="topbar">
-      <div class="streak-card">
-        <span class="fire">🔥</span>
-        <b id="streakCount">0</b>
-        <small>استریک</small>
-      </div>
 
-      <div class="brand-wrap">
-        <div class="brand-copy">
-          <h1>Leitner TCF</h1>
-          <p>یادگیری هوشمند لغات</p>
+    <section id="page-home" class="page active">
+      <header class="topbar">
+        <div class="streak-card">
+          <span class="fire">🔥</span>
+          <b id="streakCount">0</b>
+          <small>استریک</small>
         </div>
-        <div class="brand-icon">📚</div>
-      </div>
-    </header>
 
-    <section class="hero-card">
-      <div class="hero-wave"></div>
-      <div class="hero-info">
-        <div class="hero-label">مرور امروز</div>
-        <div class="hero-number" id="dueCount">0</div>
-        <div class="hero-sub">کارت آماده مرور</div>
-      </div>
-      <button id="startReviewBtn" class="hero-btn"><span>▶</span> شروع مرور</button>
+        <div class="brand-wrap">
+          <div class="brand-copy">
+            <h1>Leitner TCF</h1>
+            <p>یادگیری هوشمند لغات</p>
+          </div>
+          <div class="brand-icon">📚</div>
+        </div>
+      </header>
+
+      <section class="hero-card">
+        <div class="hero-wave"></div>
+        <div class="hero-info">
+          <div class="hero-label">مرور امروز</div>
+          <div class="hero-number" id="dueCount">0</div>
+          <div class="hero-sub">کارت آماده مرور</div>
+        </div>
+        <button id="startReviewBtn" class="hero-btn"><span>▶</span> شروع مرور</button>
+      </section>
+
+      <section class="section-head">
+        <h2>خانه‌های لایتنر</h2>
+        <span id="totalCount" class="tiny-pill">0 کارت</span>
+      </section>
+
+      <section id="boxes" class="boxes-list"></section>
+
+      <section class="actions-row">
+        <button class="action-btn" id="addCardBtn"><span class="action-icon pink">＋</span><small>کارت جدید</small></button>
+        <button class="action-btn" id="allCardsBtn"><span class="action-icon purple">☷</span><small>همه کارت‌ها</small></button>
+        <button class="action-btn" id="backupBtn"><span class="action-icon green">⬇</span><small>پشتیبان‌گیری</small></button>
+        <label class="action-btn file-label"><span class="action-icon blue">⬆</span><small>بازیابی</small>
+          <input type="file" id="restoreInput" accept="application/json" hidden />
+        </label>
+      </section>
     </section>
 
-    <section class="section-head">
-      <h2>خانه‌های لایتنر</h2>
-      <span id="totalCount" class="tiny-pill">0 کارت</span>
+    <section id="page-review" class="page">
+      <div class="page-head">
+        <div>
+          <h2>مرور</h2>
+          <p>برنامه مرور امروز و کارت‌های آماده</p>
+        </div>
+        <div class="page-head-icon">↻</div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="mini-card violet">
+          <div class="mini-label">آماده مرور</div>
+          <div class="mini-value" id="reviewDueCount">0</div>
+        </div>
+        <div class="mini-card blue">
+          <div class="mini-label">مرور شده امروز</div>
+          <div class="mini-value" id="reviewedTodayCount">0</div>
+        </div>
+      </div>
+
+      <div class="white-card">
+        <div class="card-head">
+          <h3>مرور امروز</h3>
+          <span class="small-note" id="todayDateLabel">-</span>
+        </div>
+        <p class="body-note" id="reviewSummaryText">فعلاً کارتی برای مرور نداری.</p>
+        <button id="reviewPageStartBtn" class="primary-btn full">شروع مرور</button>
+      </div>
+
+      <div class="white-card">
+        <div class="card-head">
+          <h3>آماده بر اساس خانه</h3>
+        </div>
+        <div id="reviewBoxesList" class="review-box-list"></div>
+      </div>
+
+      <div class="white-card">
+        <div class="card-head">
+          <h3>نزدیک‌ترین تاریخ‌های بعدی</h3>
+        </div>
+        <div id="upcomingList" class="upcoming-list"></div>
+      </div>
     </section>
 
-    <section id="boxes" class="boxes-list"></section>
+    <section id="page-stats" class="page">
+      <div class="page-head">
+        <div>
+          <h2>آمار</h2>
+          <p>وضعیت کلی یادگیری تو</p>
+        </div>
+        <div class="page-head-icon">▥</div>
+      </div>
 
-    <section class="actions-row">
-      <button class="action-btn" id="addCardBtn"><span class="action-icon pink">＋</span><small>کارت جدید</small></button>
-      <button class="action-btn" id="allCardsBtn"><span class="action-icon purple">☷</span><small>همه کارت‌ها</small></button>
-      <button class="action-btn" id="backupBtn"><span class="action-icon green">⬇</span><small>پشتیبان‌گیری</small></button>
-      <label class="action-btn file-label"><span class="action-icon blue">⬆</span><small>بازیابی</small>
-        <input type="file" id="restoreInput" accept="application/json" hidden />
-      </label>
+      <div class="summary-grid">
+        <div class="mini-card violet">
+          <div class="mini-label">کل کارت‌ها</div>
+          <div class="mini-value" id="statsTotal">0</div>
+        </div>
+        <div class="mini-card green">
+          <div class="mini-label">تثبیت‌شده</div>
+          <div class="mini-value" id="statsMastered">0</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>درست</span>
+          <b id="statsCorrect">0</b>
+        </div>
+        <div class="stat-card">
+          <span>غلط</span>
+          <b id="statsWrong">0</b>
+        </div>
+        <div class="stat-card">
+          <span>مرور امروز</span>
+          <b id="statsReviewedToday">0</b>
+        </div>
+        <div class="stat-card">
+          <span>نرخ موفقیت</span>
+          <b id="statsSuccess">0%</b>
+        </div>
+      </div>
+
+      <div class="white-card">
+        <div class="card-head">
+          <h3>پخش کارت‌ها در خانه‌ها</h3>
+        </div>
+        <div id="statsBoxes" class="stats-boxes"></div>
+      </div>
+
+      <div class="white-card">
+        <div class="card-head">
+          <h3>پیشرفت کلی</h3>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-labels">
+            <span>پیشرفت تا خانه ۵</span>
+            <span id="masteryPercent">0%</span>
+          </div>
+          <div class="progress-bar"><div id="masteryBar" class="progress-fill"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-settings" class="page">
+      <div class="page-head">
+        <div>
+          <h2>تنظیمات</h2>
+          <p>نسخه فعلی و اطلاعات برنامه</p>
+        </div>
+        <div class="page-head-icon">⚙</div>
+      </div>
+
+      <div class="white-card">
+        <div class="settings-list">
+          <div class="settings-row"><span>نسخه</span><b>V7</b></div>
+          <div class="settings-row"><span>تقویم نمایش</span><b>میلادی / کانادایی</b></div>
+          <div class="settings-row"><span>فرمت تاریخ</span><b>YYYY-MM-DD</b></div>
+          <div class="settings-row"><span>نام دیتابیس</span><b>leitner_tcf_db</b></div>
+        </div>
+      </div>
     </section>
 
     <nav class="bottom-nav">
-      <button class="nav-item active"><span>⌂</span><small>خانه</small></button>
-      <button class="nav-item"><span>↻</span><small>مرور</small></button>
-      <button class="nav-item"><span>▥</span><small>آمار</small></button>
-      <button class="nav-item" id="settingsBtn"><span>⚙</span><small>تنظیمات</small></button>
+      <button class="nav-item active" data-page="home"><span>⌂</span><small>خانه</small></button>
+      <button class="nav-item" data-page="review"><span>↻</span><small>مرور</small></button>
+      <button class="nav-item" data-page="stats"><span>▥</span><small>آمار</small></button>
+      <button class="nav-item" data-page="settings"><span>⚙</span><small>تنظیمات</small></button>
     </nav>
   </main>
 
