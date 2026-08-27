@@ -1,5 +1,5 @@
 
-const CACHE='leitner-tcf-v3';
+const CACHE='leitner-tcf-v4';
 const ASSETS=['./','./index.html','./styles.css','./app.js','./manifest.webmanifest','./icon.svg'];
 
 self.addEventListener('install',event=>{
@@ -15,7 +15,7 @@ self.addEventListener('activate',event=>{
 });
 
 self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET') return;
+  if(event.request.method!=='GET')return;
   event.respondWith(
     fetch(event.request).then(resp=>{
       const copy=resp.clone();

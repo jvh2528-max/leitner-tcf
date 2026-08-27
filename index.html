@@ -11,29 +11,28 @@
 <body>
   <main class="app-shell">
     <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand-icon">📚</div>
-        <div class="brand-text">
-          <h1>Leitner TCF</h1>
-          <p>یادگیری هوشمند لغات</p>
-        </div>
-      </div>
       <div class="streak-badge">
         <span>🔥</span>
         <b id="streakCount">0</b>
         <small>استریک</small>
       </div>
+
+      <div class="brand-wrap">
+        <div class="brand-text">
+          <h1>Leitner TCF</h1>
+          <p>یادگیری هوشمند لغات</p>
+        </div>
+        <div class="brand-icon">📚</div>
+      </div>
     </header>
 
     <section class="hero-card">
-      <div class="hero-left">
+      <div class="hero-info">
         <div class="hero-label">مرور امروز</div>
         <div class="hero-number" id="dueCount">0</div>
         <div class="hero-sub">کارت آماده مرور</div>
       </div>
-      <div class="hero-right">
-        <button id="startReviewBtn" class="hero-btn">شروع مرور ▶</button>
-      </div>
+      <button id="startReviewBtn" class="hero-btn">▶ شروع مرور</button>
     </section>
 
     <section class="section-head">
@@ -44,10 +43,10 @@
     <section id="boxes" class="boxes-list"></section>
 
     <section class="actions-grid">
-      <button class="action-btn" id="allCardsBtn">همه کارت‌ها ☰</button>
-      <button class="action-btn" id="addCardBtn">کارت جدید ＋</button>
-      <button class="action-btn" id="backupBtn">پشتیبان‌گیری ⤴</button>
-      <label class="action-btn file-label">بازیابی ⤵
+      <button class="action-btn" id="addCardBtn"><span class="action-icon pink">＋</span><span>کارت جدید</span></button>
+      <button class="action-btn" id="allCardsBtn"><span class="action-icon purple">☷</span><span>همه کارت‌ها</span></button>
+      <button class="action-btn" id="backupBtn"><span class="action-icon green">⬇</span><span>پشتیبان‌گیری</span></button>
+      <label class="action-btn file-label"><span class="action-icon blue">⬆</span><span>بازیابی</span>
         <input type="file" id="restoreInput" accept="application/json" hidden />
       </label>
     </section>
@@ -58,7 +57,7 @@
         <small>خانه</small>
       </button>
       <button class="nav-item">
-        <span>◔</span>
+        <span>↻</span>
         <small>مرور</small>
       </button>
       <button class="nav-item">
