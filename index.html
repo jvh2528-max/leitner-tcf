@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#f4f6fb" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Leitner TCF</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
@@ -11,48 +11,65 @@
 <body>
   <main class="app-shell">
     <header class="topbar">
-      <button class="icon-btn" id="settingsBtn" aria-label="تنظیمات">⚙️</button>
-      <div class="title-wrap">
-        <p class="eyebrow">LEITNER TCF</p>
-        <h1>جعبه لایتنر من</h1>
-        <p id="todaySummary" class="muted">در حال آماده‌سازی...</p>
+      <div class="brand-wrap">
+        <div class="brand-icon">📚</div>
+        <div class="brand-text">
+          <h1>Leitner TCF</h1>
+          <p>یادگیری هوشمند لغات</p>
+        </div>
+      </div>
+      <div class="streak-badge">
+        <span>🔥</span>
+        <b id="streakCount">0</b>
+        <small>استریک</small>
       </div>
     </header>
 
-    <section class="today-card">
-      <div class="today-head">
-        <div>
-          <p class="muted">مرور امروز</p>
-          <div class="big-number" id="dueCount">0</div>
-          <p class="muted">کارت آماده مرور</p>
-        </div>
+    <section class="hero-card">
+      <div class="hero-left">
+        <div class="hero-label">مرور امروز</div>
+        <div class="hero-number" id="dueCount">0</div>
+        <div class="hero-sub">کارت آماده مرور</div>
       </div>
-      <button id="startReviewBtn" class="primary full">شروع مرور امروز</button>
+      <div class="hero-right">
+        <button id="startReviewBtn" class="hero-btn">شروع مرور ▶</button>
+      </div>
     </section>
 
-    <section class="boxes-section">
-      <div class="section-title">
-        <h2>۵ خونه لایتنر</h2>
-        <span id="totalCount" class="pill">0 کارت</span>
-      </div>
-
-      <div id="boxes" class="boxes-grid"></div>
+    <section class="section-head">
+      <h2>خانه‌های لایتنر</h2>
+      <span id="totalCount" class="tiny-pill">0 کارت</span>
     </section>
+
+    <section id="boxes" class="boxes-list"></section>
 
     <section class="actions-grid">
-      <button class="action-btn" id="addCardBtn">＋ کارت جدید</button>
-      <button class="action-btn" id="allCardsBtn">همه کارت‌ها</button>
-      <button class="action-btn" id="backupBtn">پشتیبان‌گیری</button>
-      <label class="action-btn file-label">بازیابی
+      <button class="action-btn" id="allCardsBtn">همه کارت‌ها ☰</button>
+      <button class="action-btn" id="addCardBtn">کارت جدید ＋</button>
+      <button class="action-btn" id="backupBtn">پشتیبان‌گیری ⤴</button>
+      <label class="action-btn file-label">بازیابی ⤵
         <input type="file" id="restoreInput" accept="application/json" hidden />
       </label>
     </section>
 
-    <section class="stats-card">
-      <div><b id="masteredCount">0</b><span>تثبیت‌شده</span></div>
-      <div><b id="streakCount">0</b><span>مرور امروز</span></div>
-      <div><b id="newCount">0</b><span>خانه ۱</span></div>
-    </section>
+    <nav class="bottom-nav">
+      <button class="nav-item active">
+        <span>⌂</span>
+        <small>خانه</small>
+      </button>
+      <button class="nav-item">
+        <span>◔</span>
+        <small>مرور</small>
+      </button>
+      <button class="nav-item">
+        <span>▥</span>
+        <small>آمار</small>
+      </button>
+      <button class="nav-item" id="settingsBtn">
+        <span>⚙</span>
+        <small>تنظیمات</small>
+      </button>
+    </nav>
   </main>
 
   <dialog id="addDialog" class="sheet-dialog">
@@ -78,23 +95,22 @@
         <input id="topicInput" placeholder="Voyage / TCF / Travail ..." />
       </label>
 
-      <button value="default" id="saveCardBtn" class="primary full sticky-save">ذخیره کارت</button>
+      <button value="default" id="saveCardBtn" class="primary-btn full">ذخیره کارت</button>
     </form>
   </dialog>
 
   <dialog id="reviewDialog" class="review-dialog">
     <div class="review-shell">
       <div class="review-top">
-        <button id="closeReviewBtn" class="icon-btn">✕</button>
+        <button id="closeReviewBtn" class="close-btn">✕</button>
         <div class="review-badges">
-          <span id="reviewProgress" class="pill">0 / 0</span>
-          <span id="currentBoxBadge" class="pill">خانه 1</span>
+          <span id="reviewProgress" class="tiny-pill">0 / 0</span>
+          <span id="currentBoxBadge" class="tiny-pill">خانه 1</span>
         </div>
       </div>
 
-      <div id="reviewCard" class="flashcard" tabindex="0">
+      <div id="reviewCard" class="flashcard">
         <div class="topic" id="reviewTopic"></div>
-
         <div class="prompt-label">فارسی</div>
         <div class="persian-prompt" id="reviewBack"></div>
 
@@ -105,16 +121,16 @@
           <div class="example" id="reviewExample"></div>
         </div>
 
-        <p class="tap-hint" id="tapHint">فرانسویش رو بگو، بعد جواب رو ببین</p>
+        <p class="tap-hint" id="tapHint">اول حدس بزن، بعد جواب رو ببین</p>
       </div>
 
       <div id="revealControls">
-        <button id="revealBtn" class="primary full">نمایش جواب</button>
+        <button id="revealBtn" class="primary-btn full">نمایش جواب</button>
       </div>
 
       <div id="gradeControls" class="grade-controls hidden">
-        <button id="dontKnowBtn" class="danger">بلد نیستم ↩</button>
-        <button id="knowBtn" class="success">بلدم ←</button>
+        <button id="dontKnowBtn" class="soft-danger">بلد نیستم ↩</button>
+        <button id="knowBtn" class="soft-success">بلدم ✓</button>
       </div>
     </div>
   </dialog>

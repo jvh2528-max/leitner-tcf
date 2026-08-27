@@ -1,5 +1,5 @@
 
-const DB_NAME = 'leitner_tcf_db'; // SAME DB: preserves v1 data
+const DB_NAME = 'leitner_tcf_db';
 const DB_VERSION = 1;
 const STORE = 'cards';
 const META = 'meta';
@@ -48,14 +48,12 @@ async function refresh(){
 
   document.getElementById('dueCount').textContent=due.length;
   document.getElementById('totalCount').textContent=`${cards.length} کارت`;
-  document.getElementById('masteredCount').textContent=cards.filter(c=>c.box===5).length;
-  document.getElementById('newCount').textContent=cards.filter(c=>c.box===1).length;
 
   const todayDone=cards.reduce((n,c)=>n+((c.lastReviewed&&dateOnly(c.lastReviewed).getTime()===dateOnly().getTime())?1:0),0);
   document.getElementById('streakCount').textContent=todayDone;
-  document.getElementById('todaySummary').textContent=due.length?`امروز ${due.length} کارت منتظر مرور توست`:'مرور امروزت فعلاً کامل شده ✨';
 
-  const names=['','تازه‌ها','در حال یادگیری','رو به پیشرفت','نزدیک تسلط','تثبیت'];
+  const names=['','تازه‌ها','در حال یادگیری','رو به پیشرفت','نزدیک تسلط','تسلط'];
+  const nextLabels={1:'فردا',2:'۲ روز دیگر',3:'۴ روز دیگر',4:'۷ روز دیگر',5:'۱۵ روز دیگر'};
   const boxes=document.getElementById('boxes');
   boxes.innerHTML='';
 
@@ -63,34 +61,32 @@ async function refresh(){
     const list=cards.filter(c=>c.box===b);
     const d=list.filter(isDue).length;
     const el=document.createElement('button');
-    el.className=`box box${b}`;
-    el.dataset.box=String(b);
+    el.className=`box-row b${b}`;
     el.innerHTML=`
-      <div class="box-top">
-        <div>
-          <div class="box-name">خانه</div>
-          <div class="box-num">${b}</div>
-        </div>
-        <div class="box-count">${list.length}</div>
+      <div class="box-badge">${b}</div>
+      <div class="box-main">
+        <div class="box-title">${names[b]}</div>
+        <div class="box-meta">کارت ${list.length}</div>
       </div>
-      <div>
-        <div class="box-name">${names[b]}</div>
-        <div class="box-due">${d} آماده مرور · هر ${intervals[b]} روز</div>
-      </div>`;
+      <div class="box-side">
+        <div class="lbl">مرور بعدی</div>
+        <div class="val">${d>0 ? 'امروز' : nextLabels[b]}</div>
+      </div>
+    `;
     el.onclick=()=>openCards(b);
     boxes.appendChild(el);
   }
 }
 
 async function addCard(){
-  const back=document.getElementById('backInput').value.trim(); // Persian
-  const front=document.getElementById('frontInput').value.trim(); // French
-  if(!front||!back) return false;
+  const back=document.getElementById('backInput').value.trim();
+  const front=document.getElementById('frontInput').value.trim();
+  if(!front||!back)return false;
 
   const now=new Date().toISOString();
   await putCard({
     id:crypto.randomUUID(),
-    front, back,
+    front,back,
     example:document.getElementById('exampleInput').value.trim(),
     topic:document.getElementById('topicInput').value.trim(),
     box:1,
@@ -111,7 +107,6 @@ async function addCard(){
 async function startReview(boxFilter=null){
   let cards=(await getAllCards()).filter(isDue);
   if(boxFilter) cards=cards.filter(c=>c.box===boxFilter);
-
   reviewQueue=cards.sort((a,b)=>new Date(a.nextReview)-new Date(b.nextReview));
   reviewIndex=0;
 
@@ -130,12 +125,9 @@ function renderReview(){
 
   answerVisible=false;
   const c=reviewQueue[reviewIndex];
-
   document.getElementById('reviewProgress').textContent=`${reviewIndex+1} / ${reviewQueue.length}`;
   document.getElementById('currentBoxBadge').textContent=`خانه ${c.box}`;
   document.getElementById('reviewTopic').textContent=c.topic||'';
-
-  // IMPORTANT: Persian first, French only after reveal
   document.getElementById('reviewBack').textContent=c.back;
   document.getElementById('reviewFront').textContent=c.front;
   document.getElementById('reviewExample').textContent=c.example||'';
@@ -186,8 +178,7 @@ async function openCards(boxFilter=null){
 
   const wrap=document.getElementById('cardsList');
   wrap.innerHTML='';
-
-  if(!list.length) wrap.innerHTML='<p class="muted">کارتی وجود ندارد.</p>';
+  if(!list.length) wrap.innerHTML='<p style="color:#6e7588">کارتی وجود ندارد.</p>';
 
   list.sort((a,b)=>a.box-b.box||a.front.localeCompare(b.front)).forEach(c=>{
     const div=document.createElement('div');
@@ -246,7 +237,7 @@ async function backup(){
 async function restore(file){
   try{
     const obj=JSON.parse(await file.text());
-    if(!Array.isArray(obj.cards))throw new Error('invalid');
+    if(!Array.isArray(obj.cards)) throw new Error('invalid');
     for(const c of obj.cards) await putCard(c);
     toast(`${obj.cards.length} کارت بازیابی شد`);
     await refresh();
@@ -258,7 +249,7 @@ async function restore(file){
 document.getElementById('addCardBtn').onclick=()=>document.getElementById('addDialog').showModal();
 document.getElementById('saveCardBtn').onclick=async e=>{
   e.preventDefault();
-  if(await addCard())document.getElementById('addDialog').close();
+  if(await addCard()) document.getElementById('addDialog').close();
 };
 document.getElementById('startReviewBtn').onclick=()=>startReview();
 document.getElementById('revealBtn').onclick=reveal;
@@ -270,15 +261,15 @@ document.getElementById('allCardsBtn').onclick=()=>openCards();
 document.getElementById('closeCardsBtn').onclick=()=>document.getElementById('cardsDialog').close();
 document.getElementById('backupBtn').onclick=backup;
 document.getElementById('restoreInput').onchange=e=>{
-  if(e.target.files[0])restore(e.target.files[0]);
+  if(e.target.files[0]) restore(e.target.files[0]);
   e.target.value='';
 };
-document.getElementById('settingsBtn').onclick=()=>alert('تنظیمات پیشرفته در نسخه بعد اضافه می‌شود.');
+document.getElementById('settingsBtn').onclick=()=>alert('تنظیمات پیشرفته را در نسخه بعد اضافه می‌کنیم.');
 
 (async()=>{
   await openDB();
   await refresh();
-  if('serviceWorker'in navigator){
+  if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(()=>{});
   }
 })();
