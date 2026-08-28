@@ -239,7 +239,18 @@ textarea{min-height:84px;resize:vertical}
 .persian-prompt{font-size:29px;font-weight:950;line-height:1.55}
 .french-answer{font-size:29px;font-weight:950;line-height:1.35;direction:ltr}
 .answer-area{width:100%}
-.example{font-size:14px;color:#4b5563;direction:ltr;line-height:1.55;margin-top:12px}
+.example{
+  width:100%;
+  font-size:14px;
+  color:#4b5563;
+  line-height:1.75;
+  margin-top:12px;
+  white-space:pre-wrap;      /* preserve Enter, blank lines and spacing */
+  overflow-wrap:anywhere;
+  word-break:normal;
+  text-align:start;
+  unicode-bidi:plaintext;    /* each Persian/French paragraph keeps its natural direction */
+}
 .divider{height:1px;background:var(--line);width:100%;margin:21px 0 18px}
 .tap-hint{font-size:11px;color:#9ca3af;margin-top:21px}
 .grade-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
